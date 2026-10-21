@@ -1,0 +1,201 @@
+# ============================================================
+# settings.yaml — Central configuration
+# Western Ghats Endangered Animal Detection (Tamil Nadu / Kerala)
+# ============================================================
+
+# -----------------------------------------------------------
+# PROJECT METADATA
+# -----------------------------------------------------------
+project:
+  name: "Western Ghats Endangered Animal Detector"
+  region: "Western Ghats — Tamil Nadu & Kerala"
+  description: >
+    A focused, region-specific YOLO detector for endangered and
+    vulnerable wildlife endemic to or commonly found in the
+    Western Ghats biodiversity hotspot (Tamil Nadu / Kerala).
+  version: "2.0"
+
+# -----------------------------------------------------------
+# CLASS CONFIGURATION
+# Must match data/dataset.yaml → names (same order, same IDs).
+# NEVER reorder after labelling begins — it silently corrupts labels.
+# IUCN Red List: https://www.iucnredlist.org/
+# -----------------------------------------------------------
+classes:
+  - nilgiri_tahr              # class_id 0  — Nilgiritragus hylocrius    (EN)
+  - lion_tailed_macaque       # class_id 1  — Macaca silenus             (EN)
+  - nilgiri_langur            # class_id 2  — Semnopithecus johnii       (VU)
+  - malabar_civet             # class_id 3  — Viverra civettina          (CR)
+  - gaur                      # class_id 4  — Bos gaurus                 (VU)
+  - bengal_tiger              # class_id 5  — Panthera tigris tigris      (EN)
+  - sloth_bear                # class_id 6  — Melursus ursinus           (VU)
+  - asian_elephant            # class_id 7  — Elephas maximus            (EN)
+  - nilgiri_marten            # class_id 8  — Martes gwatkinsii          (VU)
+  - anaimalai_flying_frog     # class_id 9  — Rhacophorus pseudomalabaricus (EN)
+
+# -----------------------------------------------------------
+# SPECIES INFORMATION (for UI display)
+# -----------------------------------------------------------
+species_info:
+  nilgiri_tahr:
+    scientific_name: "Nilgiritragus hylocrius"
+    iucn_status: "Endangered"
+    iucn_code: "EN"
+    region: "Nilgiri Hills, Western Ghats"
+    description: "Mountain ungulate endemic to the Nilgiri Hills. Population ~3,100."
+  lion_tailed_macaque:
+    scientific_name: "Macaca silenus"
+    iucn_status: "Endangered"
+    iucn_code: "EN"
+    region: "Western Ghats, Kerala & Tamil Nadu"
+    description: "Arboreal primate endemic to the Western Ghats. Population ~4,000."
+  nilgiri_langur:
+    scientific_name: "Semnopithecus johnii"
+    iucn_status: "Vulnerable"
+    iucn_code: "VU"
+    region: "Nilgiris, Anaimalais, Palani Hills"
+    description: "Black-furred leaf monkey found only in the Western Ghats."
+  malabar_civet:
+    scientific_name: "Viverra civettina"
+    iucn_status: "Critically Endangered"
+    iucn_code: "CR"
+    region: "Kerala lowlands (very rare)"
+    description: "Possibly the rarest mammal in India. Fewer than 250 mature individuals."
+  gaur:
+    scientific_name: "Bos gaurus"
+    iucn_status: "Vulnerable"
+    iucn_code: "VU"
+    region: "Anamalai, Mudumalai, Wayanad"
+    description: "Largest wild bovid in the world; major presence in Western Ghats reserves."
+  bengal_tiger:
+    scientific_name: "Panthera tigris tigris"
+    iucn_status: "Endangered"
+    iucn_code: "EN"
+    region: "Mudumalai, Anamalai, Wayanad, Kalakad-Mundanthurai"
+    description: "Apex predator; Western Ghats population is ~400 tigers."
+  sloth_bear:
+    scientific_name: "Melursus ursinus"
+    iucn_status: "Vulnerable"
+    iucn_code: "VU"
+    region: "Mudumalai, Anamalai, Grizzled Giant Squirrel WS"
+    description: "Shaggy-coated bear; important seed disperser in Western Ghats forests."
+  asian_elephant:
+    scientific_name: "Elephas maximus"
+    iucn_status: "Endangered"
+    iucn_code: "EN"
+    region: "Nilgiris Biosphere, Mudumalai, Anamalai"
+    description: "The Nilgiris Biosphere has one of India's largest elephant populations."
+  nilgiri_marten:
+    scientific_name: "Martes gwatkinsii"
+    iucn_status: "Vulnerable"
+    iucn_code: "VU"
+    region: "High-elevation Western Ghats (>1000 m)"
+    description: "Rarely photographed arboreal mustelid endemic to the Nilgiris."
+  anaimalai_flying_frog:
+    scientific_name: "Rhacophorus pseudomalabaricus"
+    iucn_status: "Endangered"
+    iucn_code: "EN"
+    region: "Anaimalai Hills, Kerala–Tamil Nadu border"
+    description: "Gliding tree frog known only from a tiny area in the Anaimalai Hills."
+
+# -----------------------------------------------------------
+# PATHS
+# -----------------------------------------------------------
+paths:
+  data_dir: "data"
+  dataset_yaml: "data/dataset.yaml"
+  images_dir: "data/images"
+  labels_dir: "data/labels"
+  raw_dir: "data/raw"
+  weights_dir: "weights"
+  runs_dir: "runs"
+  logs_dir: "logs"
+  results_dir: "results"
+
+# -----------------------------------------------------------
+# MODEL CONFIGURATION
+# -----------------------------------------------------------
+model:
+  # yolov8n.pt = nano (fastest, best for small datasets on CPU)
+  # yolov8s.pt = small (good balance)
+  # yolov8m.pt = medium (needs more data and GPU)
+  pretrained_checkpoint: "yolov8s.pt"   # 's' is better for small datasets
+
+  # Set after training completes:
+  trained_checkpoint: "runs/train/exp_20261016_100103/weights/best.pt"
+
+  imgsz: 640
+  confidence_threshold: 0.25
+  iou_threshold: 0.45
+  max_det: 300
+
+# -----------------------------------------------------------
+# TRAINING — tuned for SMALL DATASETS (5–50 images/class)
+# Key strategies:
+#   - More epochs to squeeze learning from few images
+#   - Smaller batch (fits small datasets)
+#   - Low LR with warmup to prevent overfitting early
+#   - Aggressive augmentation (see below)
+#   - Mosaic + copy_paste to synthetically multiply data
+# -----------------------------------------------------------
+training:
+  epochs: 150           # More epochs for small datasets
+  batch_size: 8         # Small batch — stable with few images
+  imgsz: 640
+  device: "cpu"         # "cpu" | "0" (GPU) | "0,1" (multi-GPU)
+  workers: 2
+  patience: 30          # High patience — don't stop too early
+  optimizer: "AdamW"
+  lr0: 0.001            # Lower LR — small datasets overfit with high LR
+  lrf: 0.01
+  weight_decay: 0.0005
+  warmup_epochs: 5      # Gentle warmup
+  cos_lr: true
+  save_period: 10
+  close_mosaic: 20      # Disable mosaic in final 20 epochs for stable convergence
+
+# -----------------------------------------------------------
+# DATA AUGMENTATION — aggressive, tuned for small datasets
+# Strategy: maximize visual variation so the model sees many
+# "virtual" examples from your few real images.
+# -----------------------------------------------------------
+augmentation:
+  hsv_h: 0.02       # Hue shift — handles lighting variation
+  hsv_s: 0.8        # Saturation — wet/dry season, shadow effects
+  hsv_v: 0.5        # Brightness — dawn/dusk/overcast
+  degrees: 15.0     # Rotation — camera angles
+  translate: 0.15   # Translation
+  scale: 0.6        # Scale — distant vs close-up animals
+  shear: 2.0        # Small shear
+  perspective: 0.0005  # Slight perspective warp (camera-trap angles)
+  flipud: 0.1       # Rare vertical flip (e.g. reflection in water)
+  fliplr: 0.5       # Horizontal flip — common
+  mosaic: 1.0       # Mosaic — critical for small datasets
+  mixup: 0.1        # Mild mixup
+  copy_paste: 0.1   # Copy-paste augmentation (pastes animals into scenes)
+
+# -----------------------------------------------------------
+# EVALUATION
+# -----------------------------------------------------------
+evaluation:
+  split: "val"           # Use val when test set is very small
+  save_json: true
+  save_txt: true
+  plots: true
+
+# -----------------------------------------------------------
+# APPLICATION (Streamlit UI)
+# -----------------------------------------------------------
+app:
+  title: "Western Ghats Endangered Animal Detector"
+  description: >
+    Region-specific detector for endangered and vulnerable wildlife
+    of the Western Ghats (Tamil Nadu & Kerala). Built with YOLOv8
+    and transfer learning.
+  max_upload_size_mb: 200
+  supported_image_formats: ["jpg", "jpeg", "png", "bmp", "webp"]
+  supported_video_formats: ["mp4", "avi", "mov", "mkv"]
+  video_frame_skip: 1
+  show_fps: true
+  output_dir: "results/app_outputs"
+  show_species_cards: true   # Show IUCN info cards for detected species

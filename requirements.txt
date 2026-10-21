@@ -1,0 +1,48 @@
+# ============================================================
+# requirements.txt
+# Python dependencies for the Animal Detection project.
+#
+# Install with:
+#   pip install -r requirements.txt
+#
+# Notes:
+# - ultralytics automatically installs PyTorch (CPU version by default).
+#   For GPU support on Windows, follow:
+#   https://pytorch.org/get-started/locally/
+# - opencv-python-headless is used (no GUI window needed; Streamlit handles display).
+# - Tested with Python 3.9 – 3.12.
+# ============================================================
+
+# ─── Core ML ─────────────────────────────────────────────────────
+# Ultralytics YOLO (includes PyTorch dependency, torchvision)
+ultralytics>=8.2.0
+
+# ─── Computer Vision ─────────────────────────────────────────────
+# Headless OpenCV (no display window; Streamlit renders images)
+opencv-python-headless>=4.9.0
+
+# ─── Image Processing ────────────────────────────────────────────
+Pillow>=10.0.0
+
+# ─── Web Application ─────────────────────────────────────────────
+streamlit>=1.32.0
+
+# ─── Data / Config ───────────────────────────────────────────────
+PyYAML>=6.0
+numpy>=1.24.0
+
+# ─── Evaluation & Visualisation (optional, used by ultralytics) ──
+# matplotlib: 3.11+ has cp314 wheels on Windows.
+# If the install fails, Ultralytics will still work; evaluation plots may be skipped.
+matplotlib>=3.11.0
+seaborn>=0.13.0
+pandas>=2.0.0
+
+# ─── Development / Utilities ─────────────────────────────────────
+tqdm>=4.66.0
+
+# ─── Dataset Utilities ───────────────────────────────────────────
+# imagehash: perceptual hashing for near-duplicate image detection.
+# Used by scripts/check_dataset.py (--no-near-dup disables it if not installed).
+# Also used optionally by scripts/fetch_images.py.
+imagehash>=4.3.1

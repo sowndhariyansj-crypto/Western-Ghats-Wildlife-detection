@@ -1,0 +1,51 @@
+filename,species,scientific_name,source_site,source_url,observation_id,photographer,license,attribution_text,date_downloaded,split,notes
+# ──────────────────────────────────────────────────────────────────────────────────
+# metadata.csv — Image attribution and tracking record
+#
+# Fill in ONE ROW PER IMAGE at download time. Reconstructing this later is painful.
+# Keep this file even if you never publish the dataset — it protects you legally
+# and makes it possible to remove images if a license changes or is disputed.
+#
+# COLUMN GUIDE
+# ───────────────────────────────────────────────────────────────────────────────
+# filename       : Exact filename as stored in data/images/<split>/
+#                  e.g.  tiger_001.jpg
+#
+# species        : Your class label (must match data/dataset.yaml names exactly)
+#                  e.g.  nilgiri_tahr | lion_tailed_macaque | nilgiri_langur | malabar_civet
+#                        gaur | bengal_tiger | sloth_bear | asian_elephant | nilgiri_marten
+#                        anaimalai_flying_frog
+#
+# scientific_name: Full binomial, e.g.  Nilgiritragus hylocrius
+#
+# source_site    : Where you found it: iNaturalist | Wikimedia Commons | GBIF | other
+#
+# source_url     : Direct URL to the observation or file page (not the image file itself)
+#                  e.g.  https://www.inaturalist.org/observations/12345678
+#                        https://commons.wikimedia.org/wiki/File:Example.jpg
+#
+# observation_id : Numeric ID from iNaturalist / GBIF (leave blank for Wikimedia)
+#                  Used for grouping burst shots to the same split (anti-leakage)
+#
+# photographer   : Attribution name as shown on the source page
+#
+# license        : SPDX identifier: CC0-1.0 | CC-BY-4.0 | CC-BY-SA-4.0 | CC-BY-NC-4.0
+#                  Use exactly the identifier from the source page.
+#                  If unclear → skip the image.
+#
+# attribution_text: Full attribution string to use if you display or publish:
+#                  e.g.  "Nilgiri Tahr" by Jane Doe (iNaturalist obs. 12345678), CC BY 4.0
+#
+# date_downloaded: ISO-8601 date  e.g.  2024-10-15
+#
+# split          : train | val | test | unassigned
+#                  Assign at SPLIT TIME (after grouping by observation_id).
+#                  Set to "unassigned" while collecting; update before training.
+#
+# notes          : Anything worth recording: image quality, partial visibility,
+#                  angle, lighting, enclosure vs wild, exclusion reason, etc.
+# ──────────────────────────────────────────────────────────────────────────────────
+# EXAMPLE ROWS:
+# nilgiri_tahr_0001.jpg,nilgiri_tahr,Nilgiritragus hylocrius,iNaturalist,https://www.inaturalist.org/observations/99000001,99000001,Jane Doe,CC-BY-4.0,"Nilgiri Tahr by Jane Doe (iNat obs. 99000001) CC BY 4.0",2024-10-15,train,cliff edge side view
+# lion_tailed_macaque_0001.jpg,lion_tailed_macaque,Macaca silenus,Wikimedia Commons,https://commons.wikimedia.org/wiki/File:LTM_Example.jpg,,Ravi Kumar,CC-BY-SA-4.0,"Lion-tailed macaque by Ravi Kumar CC BY-SA 4.0",2024-10-15,train,canopy perch close-up
+# bengal_tiger_0001.jpg,bengal_tiger,Panthera tigris tigris,iNaturalist,https://www.inaturalist.org/observations/88000001,88000001,John Smith,CC-BY-NC-4.0,"Bengal Tiger by John Smith (iNat obs. 88000001) CC BY-NC 4.0",2024-10-15,val,forest trail clear visibility

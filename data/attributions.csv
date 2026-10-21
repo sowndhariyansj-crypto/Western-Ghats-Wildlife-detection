@@ -1,0 +1,4 @@
+image_filename,species,source_url,license,photographer_credit,collection_date,notes
+# Fill in one row per image you add to the dataset.
+# Example row (remove the # and edit values):
+# nilgiri_tahr_001.jpg,nilgiri_tahr,https://commons.wikimedia.org/wiki/File:Example.jpg,CC BY-SA 4.0,Photographer Name,2023-05-12,Camera trap at Eravikulam NP

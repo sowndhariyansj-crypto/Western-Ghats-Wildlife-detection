@@ -1,0 +1,50 @@
+# ============================================================
+# data/dataset.yaml — YOLO dataset descriptor
+# Western Ghats Endangered Animal Detection
+# Tamil Nadu & Kerala — Western Ghats Biodiversity Hotspot
+#
+# IUCN Status source: https://www.iucnredlist.org/
+# DO NOT reorder names after labelling begins.
+# ============================================================
+
+# Path to the dataset root (relative to this file's location).
+path: ../data
+
+# Split sub-paths (relative to 'path')
+train: images/train
+val:   images/val
+test:  images/val
+
+# ─── CLASS LIST ───────────────────────────────────────────────
+# 10 species: Western Ghats (Tamil Nadu / Kerala) focus
+# Verified IUCN Red List statuses listed below.
+
+nc: 10
+
+names:
+  0: nilgiri_tahr              # Nilgiritragus hylocrius   — EN (Endangered)
+  1: lion_tailed_macaque       # Macaca silenus            — EN (Endangered)
+  2: nilgiri_langur            # Semnopithecus johnii      — VU (Vulnerable)
+  3: malabar_civet             # Viverra civettina         — CR (Critically Endangered)
+  4: gaur                      # Bos gaurus                — VU (Vulnerable)
+  5: bengal_tiger              # Panthera tigris tigris    — EN (Endangered)
+  6: sloth_bear                # Melursus ursinus          — VU (Vulnerable)
+  7: asian_elephant            # Elephas maximus           — EN (Endangered)
+  8: nilgiri_marten            # Martes gwatkinsii         — VU (Vulnerable)
+  9: anaimalai_flying_frog     # Rhacophorus pseudomalabaricus — EN (Endangered)
+
+# ─── ADDING MORE SPECIES LATER ───────────────────────────────
+# Append new classes at the END only (never reorder existing IDs).
+# After adding:
+#   1. Increment nc
+#   2. Add the new class to config/settings.yaml → classes
+#   3. Collect and annotate images for the new class
+#   4. Run: python scripts/add_species.py --species <new_class>
+#   5. Run: python scripts/validate_dataset.py
+#   6. Retrain: python scripts/train.py
+
+# ─── PIPELINE TEST (single generic class) ─────────────────────
+# If you have NO labels yet, temporarily use:
+#   nc: 1
+#   names:
+#     0: animal
